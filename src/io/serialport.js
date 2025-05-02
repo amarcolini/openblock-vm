@@ -14,6 +14,7 @@ class Serialport extends JSONRPC {
     constructor (runtime, deviceId, peripheralOptions, connectCallback = null, resetCallback = null) {
         super();
 
+        console.log("initializing socket!");
         this._socket = runtime.getScratchLinkSocket('SERIALPORT');
         this._socket.setOnOpen(this.requestPeripheral.bind(this));
         this._socket.setOnClose(this.handleDisconnectError.bind(this));
@@ -45,6 +46,7 @@ class Serialport extends JSONRPC {
             window.clearTimeout(this._discoverTimeoutID);
         }
         this._discoverTimeoutID = window.setTimeout(this._handleDiscoverTimeout.bind(this), 15000);
+        console.log("requesting peripheral discovery!");
         this.sendRemoteRequest('discover', this._peripheralOptions)
             .catch(e => {
                 this._handleRequestError(e);
@@ -191,6 +193,8 @@ class Serialport extends JSONRPC {
     didReceiveCall (method, params) {
         switch (method) {
         case 'didDiscoverPeripheral':
+            console.log("We be discoverin bois!");
+            console.log(params);
             this._availablePeripherals[params.peripheralId] = params;
             this._runtime.emit(
                 this._runtime.constructor.PERIPHERAL_LIST_UPDATE,

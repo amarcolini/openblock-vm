@@ -8,14 +8,19 @@
 const OpenBlockArduinoUnoDevice = require('../arduinoUno/arduinoUno');
 
 const ArduinoPeripheral = require('../common/arduino-peripheral');
+const CommonPeripheral = require('../common/common-peripheral');
 
 /**
  * The list of USB device filters.
  * @readonly
  */
 const PNPID_LIST = [
-    // For chinese clones that use CH340
-    'USB\\VID_1A86&PID_7523'
+    //https://github.com/arduino/ArduinoCore-mbed/blob/34d8b266b24e8b2a03126d0cae8b7f5a9f042517/boards.txt#L258-L265
+    'USB\\VID_2341&PID_005a',
+    'USB\\VID_2341&PID_805a',
+    'USB\\VID_2341&PID_015a',
+    'USB\\VID_2341&PID_025a',
+    // '*'
 ];
 
 /**
@@ -66,7 +71,7 @@ const Pins = {
 /**
  * Manage communication with a Arduino Nano peripheral over a OpenBlock Link client socket.
  */
-class ArduinoNano33BLE extends ArduinoPeripheral{
+class ArduinoNano33BLE extends CommonPeripheral{
     /**
      * Construct a Arduino communication object.
      * @param {Runtime} runtime - the OpenBlock runtime
@@ -81,13 +86,13 @@ class ArduinoNano33BLE extends ArduinoPeripheral{
 /**
   * OpenBlock blocks to interact with a Arduino Nano Ultra peripheral.
   */
-class OpenBlockArduinoNano33BLEDevice extends OpenBlockArduinoUnoDevice{
+class OpenBlockArduinoNano33BLEDevice extends OpenBlockArduinoUnoDevice {
 
     /**
       * @return {string} - the ID of this extension.
       */
     get DEVICE_ID () {
-        return 'arduinoNano';
+        return 'arduinoNano33BLE';
     }
 
     get ANALOG_PINS_MENU () {
